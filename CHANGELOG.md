@@ -9,6 +9,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Drag-and-drop song arranger with pattern palette, drop markers, slot reordering, Up/Down moves, duplicate/remove, trash-drop deletion, Delete-key removal and repeat controls.
 - Song file card with title, folder, filename, save/open and a list of existing song files; projects now carry a title.
+- Song-mode timeline follows the playing slot, highlights it, shows per-pattern progress and auto-centers the playhead when enabled.
 - Timeline header append control and a wide end drop marker for adding multiple patterns.
 - Mixer redesign with responsive grid wrapping, per-channel peak meters, volume/pan readouts, pan centering, mute/solo, body/send values and a fixed master L/R summary with equal-size meters.
 - Vintage FX rack with equal-size reverb, master and send modules, custom knobs and an extensible `fx_module` layout.

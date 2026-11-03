@@ -21,6 +21,7 @@ pub struct Nirudrums {
     queue: Arc<ArrayQueue<EngineCommand>>,
     meters: Arc<Meters>,
     current_step: Arc<AtomicU32>,
+    current_song_slot: Arc<AtomicU32>,
 }
 
 impl Default for Nirudrums {
@@ -30,9 +31,16 @@ impl Default for Nirudrums {
         let queue = Arc::new(ArrayQueue::new(256));
         let meters = Arc::new(Meters::default());
         let current_step = Arc::new(AtomicU32::new(0));
+        let current_song_slot = Arc::new(AtomicU32::new(0));
         let kit_swap = Arc::new(ArrayQueue::new(4));
         let kit_slot = Arc::new(RwLock::new(kit.clone()));
-        let engine = Engine::new(kit, queue.clone(), meters.clone(), current_step.clone());
+        let engine = Engine::new(
+            kit,
+            queue.clone(),
+            meters.clone(),
+            current_step.clone(),
+            current_song_slot.clone(),
+        );
         Self {
             params,
             kit: kit_slot,
@@ -41,6 +49,7 @@ impl Default for Nirudrums {
             queue,
             meters,
             current_step,
+            current_song_slot,
         }
     }
 }
@@ -76,6 +85,7 @@ impl Plugin for Nirudrums {
             self.queue.clone(),
             self.meters.clone(),
             self.current_step.clone(),
+            self.current_song_slot.clone(),
         )
     }
 

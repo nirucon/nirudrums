@@ -82,6 +82,7 @@ Test machine: `othala`, Debian 13, REAPER 7.84, X11 display through Xvfb for aut
 - FX rack renders equal-size modules with vintage knobs and a send matrix.
 - At 1280x820 the mixer wrapped all 12 channels into a 9+3 grid; master L/R summary stayed pinned at the top with equal-width meters.
 - Song file card supports title, folder, filename, save/open and existing-file selection; timeline header can append patterns without dragging.
+- Song-mode follow test: 10 appended slots, active slot highlighted with border/progress, PLAYING status and timeline auto-centering verified.
 - Window geometry was verified in the NIRUWM regression above.
 
 ## Not tested

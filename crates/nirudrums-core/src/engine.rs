@@ -218,6 +218,7 @@ pub struct Engine {
     commands: Arc<ArrayQueue<EngineCommand>>,
     meters: Arc<Meters>,
     current_step: Arc<AtomicU32>,
+    current_song_slot: Arc<AtomicU32>,
     age: u64,
     scratch_r: Vec<f32>,
 }
@@ -228,6 +229,7 @@ impl Engine {
         commands: Arc<ArrayQueue<EngineCommand>>,
         meters: Arc<Meters>,
         current_step: Arc<AtomicU32>,
+        current_song_slot: Arc<AtomicU32>,
     ) -> Self {
         let mut engine = Self {
             kit,
@@ -247,6 +249,7 @@ impl Engine {
             commands,
             meters,
             current_step,
+            current_song_slot,
             age: 0,
             scratch_r: Vec::new(),
         };
@@ -280,6 +283,7 @@ impl Engine {
         self.was_playing = false;
         self.reverb.reset();
         self.current_step.store(0, Ordering::Relaxed);
+        self.current_song_slot.store(0, Ordering::Relaxed);
         self.meters.store(0.0, 0.0);
         self.meters.store_channels(&[0.0; NUM_INSTRUMENTS]);
     }
@@ -600,6 +604,9 @@ impl Engine {
             };
             self.current_step
                 .store(display_step as u32, Ordering::Relaxed);
+            let song_slot = if song_mode { self.song_index } else { 0 };
+            self.current_song_slot
+                .store(song_slot as u32, Ordering::Relaxed);
         }
     }
 
@@ -613,7 +620,8 @@ impl Engine {
         let commands = Arc::new(ArrayQueue::new(32));
         let meters = Arc::new(Meters::default());
         let current_step = Arc::new(AtomicU32::new(0));
-        let mut engine = Engine::new(kit, commands, meters, current_step);
+        let current_song_slot = Arc::new(AtomicU32::new(0));
+        let mut engine = Engine::new(kit, commands, meters, current_step, current_song_slot);
         engine.prepare(48_000.0, 512);
         let bpm = project.bpm.clamp(20.0, 300.0);
         let total = ((bars.max(1) as f64 * 4.0 * 60.0 / bpm as f64) * 48_000.0) as usize;
@@ -662,6 +670,7 @@ mod tests {
             kit,
             Arc::new(ArrayQueue::new(32)),
             Arc::new(Meters::default()),
+            Arc::new(AtomicU32::new(0)),
             Arc::new(AtomicU32::new(0)),
         )
     }

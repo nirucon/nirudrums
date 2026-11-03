@@ -52,6 +52,8 @@ pub struct UiState {
     paint_instrument: Option<usize>,
     velocity_edit: bool,
     show_help: bool,
+    follow_timeline: bool,
+    last_song_slot: Option<usize>,
     preset_id: String,
     undo: Vec<Project>,
     redo: Vec<Project>,
@@ -81,6 +83,8 @@ impl UiState {
             paint_instrument: None,
             velocity_edit: false,
             show_help: false,
+            follow_timeline: true,
+            last_song_slot: None,
             preset_id: "init".into(),
             undo: Vec::new(),
             redo: Vec::new(),
@@ -115,6 +119,7 @@ pub fn create_editor(
     queue: Arc<ArrayQueue<EngineCommand>>,
     meters: Arc<Meters>,
     current_step: Arc<AtomicU32>,
+    current_song_slot: Arc<AtomicU32>,
 ) -> Option<Box<dyn Editor>> {
     let egui_state = params.editor_state.clone();
     create_egui_editor(
@@ -150,7 +155,15 @@ pub fn create_editor(
                         &kit_swap,
                     ),
                     Tab::Mixer => mixer_tab(ui, &params, setter, &meters, state),
-                    Tab::Song => song_tab(ui, project, &params, setter, state),
+                    Tab::Song => song_tab(
+                        ui,
+                        project,
+                        &params,
+                        setter,
+                        state,
+                        &current_step,
+                        &current_song_slot,
+                    ),
                     Tab::Fx => fx_tab(ui, &params, setter),
                     Tab::Settings => {
                         settings_tab(ui, project, &params, setter, state, &current_kit)
@@ -1573,6 +1586,8 @@ fn song_tab(
     params: &NirudrumsParams,
     setter: &ParamSetter,
     state: &mut UiState,
+    current_step: &AtomicU32,
+    current_song_slot: &AtomicU32,
 ) {
     ui.horizontal(|ui| {
         ui.label(RichText::new("SONG").heading().color(BONE));
@@ -1804,6 +1819,29 @@ fn song_tab(
                             .small()
                             .color(MUTED),
                     );
+                    let active_slot = current_song_slot.load(Ordering::Relaxed) as usize;
+                    if params.sequencer.song_mode.value() && !slots.is_empty() {
+                        ui.label(
+                            RichText::new(format!(
+                                "PLAYING {:02}",
+                                active_slot.min(slots.len() - 1) + 1
+                            ))
+                            .monospace()
+                            .small()
+                            .color(ACCENT),
+                        );
+                    }
+                    let mut follow = state.follow_timeline;
+                    if ui
+                        .checkbox(&mut follow, "FOLLOW")
+                        .on_hover_text("Keep the playing slot centered while song mode runs")
+                        .changed()
+                    {
+                        state.follow_timeline = follow;
+                        if follow {
+                            state.last_song_slot = None;
+                        }
+                    }
                 });
             });
             ui.horizontal(|ui| {
@@ -1895,6 +1933,23 @@ fn song_tab(
                                     .map(|pattern| pattern.name.clone())
                                     .unwrap_or_else(|| "Missing".into());
                                 let selected = state.selected_song_slot == index;
+                                let active_slot =
+                                    current_song_slot.load(Ordering::Relaxed) as usize;
+                                let active =
+                                    params.sequencer.song_mode.value() && index == active_slot;
+                                let pattern_length = project
+                                    .patterns
+                                    .get(usize::from(slot.pattern))
+                                    .map(|pattern| usize::from(pattern.length))
+                                    .unwrap_or(16)
+                                    .max(1);
+                                let progress = if active {
+                                    ((current_step.load(Ordering::Relaxed) + 1) as f32
+                                        / pattern_length as f32)
+                                        .clamp(0.0, 1.0)
+                                } else {
+                                    0.0
+                                };
                                 let source = drag_card(
                                     ui,
                                     egui::Id::new(("song-slot", index)),
@@ -1903,36 +1958,68 @@ fn song_tab(
                                         pattern: usize::from(slot.pattern),
                                     },
                                     |ui| {
-                                        Frame::group(ui.style())
-                                            .fill(if selected { ACCENT_DARK } else { PANEL_ALT })
-                                            .inner_margin(egui::Margin::symmetric(8, 6))
-                                            .show(ui, |ui| {
-                                                ui.set_width(152.0);
-                                                ui.vertical(|ui| {
+                                        let mut frame = Frame::group(ui.style()).fill(if active {
+                                            Color32::from_rgb(120, 45, 39)
+                                        } else if selected {
+                                            ACCENT_DARK
+                                        } else {
+                                            PANEL_ALT
+                                        });
+                                        if active {
+                                            frame = frame.stroke(Stroke::new(2.0_f32, ACCENT));
+                                        }
+                                        frame.show(ui, |ui| {
+                                            ui.set_width(152.0);
+                                            ui.vertical(|ui| {
+                                                ui.horizontal(|ui| {
                                                     ui.label(
                                                         RichText::new(format!("{:02}", index + 1))
                                                             .monospace()
                                                             .small()
                                                             .color(GOLD),
                                                     );
-                                                    ui.label(
-                                                        RichText::new(name)
-                                                            .small()
-                                                            .strong()
-                                                            .color(BONE),
-                                                    );
+                                                    if active {
+                                                        ui.label(
+                                                            RichText::new("PLAYING")
+                                                                .monospace()
+                                                                .small()
+                                                                .color(ACCENT),
+                                                        );
+                                                    }
+                                                });
+                                                ui.label(
+                                                    RichText::new(name)
+                                                        .small()
+                                                        .strong()
+                                                        .color(BONE),
+                                                );
+                                                ui.horizontal(|ui| {
                                                     ui.label(
                                                         RichText::new(format!("x{}", slot.repeats))
                                                             .monospace()
                                                             .small()
                                                             .color(MUTED),
                                                     );
+                                                    ui.add_sized(
+                                                        [96.0, 5.0],
+                                                        egui::ProgressBar::new(progress).fill(
+                                                            if active { ACCENT } else { GRID_OFF },
+                                                        ),
+                                                    );
                                                 });
                                             });
+                                        });
                                     },
                                 );
                                 if source.clicked() {
                                     clicked_slot = Some(index);
+                                }
+                                if active
+                                    && state.follow_timeline
+                                    && state.last_song_slot != Some(active_slot)
+                                {
+                                    source.scroll_to_me(Some(Align::Center));
+                                    state.last_song_slot = Some(active_slot);
                                 }
                             }
                         });
