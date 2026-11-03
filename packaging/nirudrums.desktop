@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=NIRUDRUMS
+GenericName=Drum Machine
+Comment=Original vintage drum machine and step sequencer
+Exec=@EXEC@
+Icon=nirudrums
+Terminal=false
+Categories=AudioVideo;Audio;Music;
+Keywords=drum;machine;sequencer;midi;audio;music;
+StartupNotify=true
+StartupWMClass=NIRUDRUMS

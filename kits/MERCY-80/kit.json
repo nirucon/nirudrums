@@ -1,0 +1,428 @@
+{
+  "schema": 1,
+  "id": "mercy-80",
+  "name": "MERCY-80",
+  "version": "0.0.1",
+  "description": "Original dark, mechanical drum kit for NIRUDRUMS.",
+  "sample_rate": 48000,
+  "choke_groups": [
+    {
+      "id": "hats",
+      "name": "Hi-hats",
+      "instruments": [
+        "closed_hat",
+        "open_hat"
+      ]
+    }
+  ],
+  "instruments": [
+    {
+      "id": "kick",
+      "name": "Kick",
+      "midi_note": 36,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/kick_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/kick_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/kick_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": 0.5,
+        "pan": 0.0,
+        "pitch": 0.0,
+        "decay": 0.86,
+        "body": 0.14,
+        "velocity": 0.9,
+        "drive": 0.24,
+        "reverb_send": 0.08,
+        "output": 0
+      }
+    },
+    {
+      "id": "snare",
+      "name": "Snare",
+      "midi_note": 38,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/snare_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/snare_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/snare_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -1.0,
+        "pan": 0.0,
+        "pitch": 0.0,
+        "decay": 1.05,
+        "body": 0.16,
+        "velocity": 0.9,
+        "drive": 0.26,
+        "reverb_send": 0.34,
+        "output": 0
+      }
+    },
+    {
+      "id": "closed_hat",
+      "name": "Closed Hi-Hat",
+      "midi_note": 42,
+      "choke_group": "hats",
+      "samples": [
+        {
+          "file": "samples/closed_hat_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/closed_hat_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/closed_hat_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -7.0,
+        "pan": 0.15,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.0,
+        "velocity": 0.7,
+        "drive": 0.08,
+        "reverb_send": 0.02,
+        "output": 0
+      }
+    },
+    {
+      "id": "open_hat",
+      "name": "Open Hi-Hat",
+      "midi_note": 46,
+      "choke_group": "hats",
+      "samples": [
+        {
+          "file": "samples/open_hat_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/open_hat_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/open_hat_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -8.0,
+        "pan": 0.15,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.0,
+        "velocity": 0.7,
+        "drive": 0.08,
+        "reverb_send": 0.05,
+        "output": 0
+      }
+    },
+    {
+      "id": "crash1",
+      "name": "Crash 1",
+      "midi_note": 49,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/crash1_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/crash1_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/crash1_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -9.0,
+        "pan": -0.35,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.0,
+        "velocity": 0.7,
+        "drive": 0.05,
+        "reverb_send": 0.22,
+        "output": 0
+      }
+    },
+    {
+      "id": "crash2",
+      "name": "Crash 2",
+      "midi_note": 57,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/crash2_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/crash2_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/crash2_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -9.0,
+        "pan": 0.35,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.0,
+        "velocity": 0.7,
+        "drive": 0.05,
+        "reverb_send": 0.22,
+        "output": 0
+      }
+    },
+    {
+      "id": "ride",
+      "name": "Ride",
+      "midi_note": 51,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/ride_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/ride_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/ride_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -8.0,
+        "pan": 0.25,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.0,
+        "velocity": 0.7,
+        "drive": 0.06,
+        "reverb_send": 0.14,
+        "output": 0
+      }
+    },
+    {
+      "id": "high_tom",
+      "name": "High Tom",
+      "midi_note": 50,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/high_tom_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/high_tom_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/high_tom_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -3.0,
+        "pan": -0.2,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.14,
+        "velocity": 0.8,
+        "drive": 0.12,
+        "reverb_send": 0.28,
+        "output": 0
+      }
+    },
+    {
+      "id": "mid_tom",
+      "name": "Mid Tom",
+      "midi_note": 47,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/mid_tom_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/mid_tom_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/mid_tom_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -2.0,
+        "pan": 0.0,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.14,
+        "velocity": 0.8,
+        "drive": 0.12,
+        "reverb_send": 0.28,
+        "output": 0
+      }
+    },
+    {
+      "id": "low_tom",
+      "name": "Low Tom",
+      "midi_note": 43,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/low_tom_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/low_tom_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/low_tom_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -1.0,
+        "pan": 0.2,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.14,
+        "velocity": 0.8,
+        "drive": 0.12,
+        "reverb_send": 0.28,
+        "output": 0
+      }
+    },
+    {
+      "id": "clap",
+      "name": "Clap",
+      "midi_note": 39,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/clap_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/clap_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/clap_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -4.0,
+        "pan": -0.1,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.06,
+        "velocity": 0.8,
+        "drive": 0.14,
+        "reverb_send": 0.28,
+        "output": 0
+      }
+    },
+    {
+      "id": "rimshot",
+      "name": "Rimshot",
+      "midi_note": 37,
+      "choke_group": null,
+      "samples": [
+        {
+          "file": "samples/rimshot_v0.wav",
+          "velocity_min": 0,
+          "velocity_max": 42
+        },
+        {
+          "file": "samples/rimshot_v1.wav",
+          "velocity_min": 43,
+          "velocity_max": 85
+        },
+        {
+          "file": "samples/rimshot_v2.wav",
+          "velocity_min": 86,
+          "velocity_max": 127
+        }
+      ],
+      "defaults": {
+        "volume_db": -8.0,
+        "pan": 0.1,
+        "pitch": 0.0,
+        "decay": 1.0,
+        "body": 0.0,
+        "velocity": 0.7,
+        "drive": 0.16,
+        "reverb_send": 0.06,
+        "output": 0
+      }
+    }
+  ]
+}

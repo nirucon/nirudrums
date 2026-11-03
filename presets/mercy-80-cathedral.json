@@ -1,0 +1,156 @@
+{
+  "schema": 1,
+  "id": "mercy-80-cathedral",
+  "name": "MERCY-80 Cathedral",
+  "description": "Sub-heavy kick, deep toms and a wide, dark room for maximum weight.",
+  "kit": "mercy-80",
+  "instruments": {
+    "kick": {
+      "volume_db": 0.0,
+      "pan": 0.0,
+      "pitch": -3.0,
+      "decay": 1.4,
+      "body": 0.5,
+      "velocity": 0.9,
+      "drive": 0.55,
+      "reverb_send": 0.08,
+      "output": 0
+    },
+    "snare": {
+      "volume_db": 0.0,
+      "pan": 0.0,
+      "pitch": 0.0,
+      "decay": 1.05,
+      "body": 0.22,
+      "velocity": 0.9,
+      "drive": 0.4,
+      "reverb_send": 0.34,
+      "output": 0
+    },
+    "closed_hat": {
+      "volume_db": -7.0,
+      "pan": 0.15,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.08,
+      "reverb_send": 0.02,
+      "output": 0
+    },
+    "open_hat": {
+      "volume_db": -8.0,
+      "pan": 0.15,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.08,
+      "reverb_send": 0.05,
+      "output": 0
+    },
+    "crash1": {
+      "volume_db": -9.0,
+      "pan": -0.35,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.05,
+      "reverb_send": 0.22,
+      "output": 0
+    },
+    "crash2": {
+      "volume_db": -9.0,
+      "pan": 0.35,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.05,
+      "reverb_send": 0.22,
+      "output": 0
+    },
+    "ride": {
+      "volume_db": -8.0,
+      "pan": 0.25,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.06,
+      "reverb_send": 0.14,
+      "output": 0
+    },
+    "high_tom": {
+      "volume_db": -3.0,
+      "pan": -0.2,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.24,
+      "velocity": 0.8,
+      "drive": 0.12,
+      "reverb_send": 0.28,
+      "output": 0
+    },
+    "mid_tom": {
+      "volume_db": -2.0,
+      "pan": 0.0,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.26,
+      "velocity": 0.8,
+      "drive": 0.12,
+      "reverb_send": 0.28,
+      "output": 0
+    },
+    "low_tom": {
+      "volume_db": -1.0,
+      "pan": 0.2,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.3,
+      "velocity": 0.8,
+      "drive": 0.3,
+      "reverb_send": 0.28,
+      "output": 0
+    },
+    "clap": {
+      "volume_db": -4.0,
+      "pan": -0.1,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.06,
+      "velocity": 0.8,
+      "drive": 0.14,
+      "reverb_send": 0.28,
+      "output": 0
+    },
+    "rimshot": {
+      "volume_db": -8.0,
+      "pan": 0.1,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.16,
+      "reverb_send": 0.06,
+      "output": 0
+    }
+  },
+  "master": {
+    "volume_db": -1.0,
+    "drive": 0.38,
+    "limiter": true,
+    "dry": false
+  },
+  "reverb": {
+    "mode": "room",
+    "mix": 0.28,
+    "decay": 0.7,
+    "pre_delay_ms": 30,
+    "damping": 0.25,
+    "width": 1.0,
+    "gate_ms": 0
+  }
+}

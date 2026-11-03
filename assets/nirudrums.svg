@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0d0d0e"/>
+  <rect x="40" y="40" width="432" height="432" rx="56" fill="#1a1a1c" stroke="#3a3a3e" stroke-width="8"/>
+  <rect x="64" y="64" width="384" height="92" rx="22" fill="#b43830"/>
+  <text x="256" y="126" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="54" font-weight="700" letter-spacing="4" fill="#e2ded2">NIRU</text>
+  <g fill="#2b2b2f" stroke="#4a4a50" stroke-width="4">
+    <rect x="76" y="188" width="76" height="58" rx="10"/>
+    <rect x="164" y="188" width="76" height="58" rx="10"/>
+    <rect x="252" y="188" width="76" height="58" rx="10"/>
+    <rect x="340" y="188" width="76" height="58" rx="10"/>
+    <rect x="76" y="258" width="76" height="58" rx="10"/>
+    <rect x="164" y="258" width="76" height="58" rx="10"/>
+    <rect x="252" y="258" width="76" height="58" rx="10"/>
+    <rect x="340" y="258" width="76" height="58" rx="10"/>
+    <rect x="76" y="328" width="76" height="58" rx="10"/>
+    <rect x="164" y="328" width="76" height="58" rx="10"/>
+    <rect x="252" y="328" width="76" height="58" rx="10"/>
+    <rect x="340" y="328" width="76" height="58" rx="10"/>
+  </g>
+  <g fill="#b43830">
+    <rect x="76" y="328" width="76" height="58" rx="10"/>
+    <rect x="252" y="258" width="76" height="58" rx="10"/>
+    <rect x="340" y="188" width="76" height="58" rx="10"/>
+  </g>
+  <g fill="#c4a25c">
+    <circle cx="124" cy="430" r="12"/>
+    <circle cx="188" cy="430" r="12"/>
+    <circle cx="252" cy="430" r="12"/>
+    <circle cx="316" cy="430" r="12"/>
+    <circle cx="380" cy="430" r="12"/>
+  </g>
+</svg>

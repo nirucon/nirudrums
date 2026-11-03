@@ -1,0 +1,156 @@
+{
+  "schema": 1,
+  "id": "mercy-80-gated-room",
+  "name": "MERCY-80 Gated Room",
+  "description": "Punchy kick, fat snare and gated room.",
+  "kit": "mercy-80",
+  "instruments": {
+    "kick": {
+      "volume_db": 0.0,
+      "pan": 0.0,
+      "pitch": 0.0,
+      "decay": 0.86,
+      "body": 0.14,
+      "velocity": 0.9,
+      "drive": 0.22,
+      "reverb_send": 0.08,
+      "output": 0
+    },
+    "snare": {
+      "volume_db": 0.0,
+      "pan": 0.0,
+      "pitch": 0.0,
+      "decay": 1.05,
+      "body": 0.16,
+      "velocity": 0.9,
+      "drive": 0.26,
+      "reverb_send": 0.4,
+      "output": 0
+    },
+    "closed_hat": {
+      "volume_db": -7.0,
+      "pan": 0.15,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.08,
+      "reverb_send": 0.02,
+      "output": 0
+    },
+    "open_hat": {
+      "volume_db": -8.0,
+      "pan": 0.15,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.08,
+      "reverb_send": 0.05,
+      "output": 0
+    },
+    "crash1": {
+      "volume_db": -9.0,
+      "pan": -0.35,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.05,
+      "reverb_send": 0.22,
+      "output": 0
+    },
+    "crash2": {
+      "volume_db": -9.0,
+      "pan": 0.35,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.05,
+      "reverb_send": 0.22,
+      "output": 0
+    },
+    "ride": {
+      "volume_db": -8.0,
+      "pan": 0.25,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.06,
+      "reverb_send": 0.14,
+      "output": 0
+    },
+    "high_tom": {
+      "volume_db": -3.0,
+      "pan": -0.2,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.14,
+      "velocity": 0.8,
+      "drive": 0.12,
+      "reverb_send": 0.34,
+      "output": 0
+    },
+    "mid_tom": {
+      "volume_db": -2.0,
+      "pan": 0.0,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.14,
+      "velocity": 0.8,
+      "drive": 0.12,
+      "reverb_send": 0.34,
+      "output": 0
+    },
+    "low_tom": {
+      "volume_db": -1.0,
+      "pan": 0.2,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.14,
+      "velocity": 0.8,
+      "drive": 0.12,
+      "reverb_send": 0.34,
+      "output": 0
+    },
+    "clap": {
+      "volume_db": -4.0,
+      "pan": -0.1,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.06,
+      "velocity": 0.8,
+      "drive": 0.14,
+      "reverb_send": 0.28,
+      "output": 0
+    },
+    "rimshot": {
+      "volume_db": -8.0,
+      "pan": 0.1,
+      "pitch": 0.0,
+      "decay": 1.0,
+      "body": 0.0,
+      "velocity": 0.7,
+      "drive": 0.16,
+      "reverb_send": 0.06,
+      "output": 0
+    }
+  },
+  "master": {
+    "volume_db": -1.0,
+    "drive": 0.18,
+    "limiter": true,
+    "dry": false
+  },
+  "reverb": {
+    "mode": "gated",
+    "mix": 0.34,
+    "decay": 0.52,
+    "pre_delay_ms": 18,
+    "damping": 0.3,
+    "width": 1.0,
+    "gate_ms": 260
+  }
+}
