@@ -1,0 +1,27 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock.bak
+
+# Build artifacts
+/dist/
+/release/
+*.zip
+*.tar.gz
+*.deb
+*.pkg.tar.zst
+*.xbps
+*.dmg
+*.pkg
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Local test output
+/tmp/
+*.wav
+!kits/**/*.wav
+!examples/**/*.wav
