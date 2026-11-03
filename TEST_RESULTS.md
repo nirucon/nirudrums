@@ -1,4 +1,4 @@
-# Test results — NIRUDRUMS 0.0.1
+# Test results — NIRUDRUMS 0.0.2
 
 Date: 2026-11-03
 
@@ -70,6 +70,18 @@ Test machine: `othala`, Debian 13, REAPER 7.84, X11 display through Xvfb for aut
 - Final package was reinstalled on `othala` and `niruxwork`; installed checksums match the release bundle.
 - Body/low-end processing, the vintage 8-bit character and the gated-room preset were included in the final REAPER render test.
 - Ran `uninstall.sh`; binaries and factory assets were removed while a sentinel user project file was preserved.
+
+## UX verification
+
+- Standalone at 1280x820 under Xvfb: quick-guide overlay opened from the `?` action, preset browser applied a factory preset, drag-painting changed a run of steps, and the velocity lane showed the updated values.
+- The pattern grid no longer scrolls while painting; selected-step feedback is limited to the active channel.
+- Mixer showed per-channel peak meters, dB/pan readouts and a fixed master L/R summary; `C` centered a pan value.
+- Song/Settings/FX layouts, sound replacement, session save/open and preset save/open were exercised in the same standalone session.
+- Song arranger: palette click selected the pattern, dragging it into the empty timeline created a slot, and the selected-slot editor exposed repeats, Up/Down, Duplicate and Remove.
+- Song timeline exposes drop markers, a delete drop target, Delete-key removal and automatic total-bar display.
+- FX rack renders equal-size modules with vintage knobs and a send matrix.
+- At 1280x820 the mixer wrapped all 12 channels into a 9+3 grid; master L/R summary stayed pinned at the top.
+- Window geometry was verified in the NIRUWM regression above.
 
 ## Not tested
 

@@ -71,6 +71,7 @@ pub struct NoteInput {
 pub struct Meters {
     pub left: AtomicF32,
     pub right: AtomicF32,
+    pub channels: [AtomicF32; NUM_INSTRUMENTS],
 }
 
 impl Default for Meters {
@@ -78,6 +79,7 @@ impl Default for Meters {
         Self {
             left: AtomicF32::new(0.0),
             right: AtomicF32::new(0.0),
+            channels: std::array::from_fn(|_| AtomicF32::new(0.0)),
         }
     }
 }
@@ -90,9 +92,22 @@ impl Meters {
         )
     }
 
+    pub fn channel_peak(&self, instrument: usize) -> f32 {
+        self.channels
+            .get(instrument)
+            .map(|meter| meter.load(Ordering::Relaxed))
+            .unwrap_or(0.0)
+    }
+
     fn store(&self, left: f32, right: f32) {
         self.left.store(left, Ordering::Relaxed);
         self.right.store(right, Ordering::Relaxed);
+    }
+
+    fn store_channels(&self, channels: &[f32; NUM_INSTRUMENTS]) {
+        for (meter, value) in self.channels.iter().zip(channels) {
+            meter.store(*value, Ordering::Relaxed);
+        }
     }
 }
 
@@ -266,6 +281,7 @@ impl Engine {
         self.reverb.reset();
         self.current_step.store(0, Ordering::Relaxed);
         self.meters.store(0.0, 0.0);
+        self.meters.store_channels(&[0.0; NUM_INSTRUMENTS]);
     }
 
     pub fn kit_changed(&mut self, kit: Arc<Kit>) {
@@ -449,6 +465,7 @@ impl Engine {
         let mut note_index = 0;
         let mut peak_l = 0.0_f32;
         let mut peak_r = 0.0_f32;
+        let mut channel_peak = [0.0_f32; NUM_INSTRUMENTS];
         let base_step =
             (self.sample_rate as f64 * 60.0 / settings.bpm.clamp(20.0, 300.0) as f64 / 4.0)
                 .max(1.0);
@@ -537,6 +554,9 @@ impl Engine {
                 let fat = raw + voice.low_state * voice.body * 1.6;
                 let shaped = soft_clip(fat, voice.drive);
                 let value = shaped * voice.envelope * voice.gain;
+                if let Some(peak) = channel_peak.get_mut(voice.instrument) {
+                    *peak = peak.max(value.abs());
+                }
                 left += value * voice.pan_l;
                 right += value * voice.pan_r;
                 reverb_l += value * voice.pan_l * voice.send;
@@ -571,6 +591,7 @@ impl Engine {
             peak_r = peak_r.max(right.abs());
         }
         self.meters.store(peak_l, peak_r);
+        self.meters.store_channels(&channel_peak);
         if playing {
             let display_step = if self.step == 0 {
                 usize::from(self.pattern.length.max(1)) - 1

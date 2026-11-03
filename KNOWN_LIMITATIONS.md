@@ -31,6 +31,9 @@ NIRUDRUMS 0.0.1 is a complete Linux x86_64 first release, but it is not feature-
 ## Kits and presets
 
 - External kits must contain exactly 12 instruments and match the v1 kit schema. The KIT screen can load a kit directory; individual sample replacement is done by editing the kit directory and reloading it.
+- WAV sound replacement in the KIT screen is session-only. To keep a custom sound, create a kit directory and load it as a kit.
+- Sessions, user presets and exported WAVs use editable path fields; a native file chooser is not included yet.
+- The song arranger supports drag/drop, reorder, repeats, duplicate, remove and keyboard Delete. Multi-select and range-loop editing are not implemented yet.
 - A project that references an external kit reloads the embedded factory kit on a fresh application start; the external kit must be selected again in the KIT screen. Projects still open because the kit id is preserved, but the samples may differ until the kit is loaded.
 - User presets store processing settings, not patterns or song arrangement.
 

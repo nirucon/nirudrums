@@ -2,7 +2,7 @@
 
 An early prototype of a drum machine for Linux, built in Rust.
 
-- Version: 0.0.1
+- Version: 0.0.2
 - Standalone application and VST3 instrument
 - MERCY-80 kit with 12 instruments and three velocity layers
 - Step sequencer, mixer, effects and WAV export

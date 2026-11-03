@@ -1541,7 +1541,7 @@ dependencies = [
 
 [[package]]
 name = "nirudrums"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "crossbeam-queue",
  "hound",
@@ -1556,7 +1556,7 @@ dependencies = [
 
 [[package]]
 name = "nirudrums-core"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "atomic_float",
  "crossbeam-queue",
@@ -3148,7 +3148,7 @@ checksum = "b9cc00251562a284751c9973bace760d86c0276c471b4be569fe6b068ee97a56"
 
 [[package]]
 name = "xtask"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "nih_plug_xtask",
 ]
