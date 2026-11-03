@@ -57,6 +57,8 @@ pub struct UiState {
     redo: Vec<Project>,
     clipboard: Option<nirudrums_core::Pattern>,
     project_path: String,
+    song_folder: String,
+    song_filename: String,
     preset_path: String,
     kit_path: String,
     sound_path: String,
@@ -83,7 +85,9 @@ impl UiState {
             undo: Vec::new(),
             redo: Vec::new(),
             clipboard: None,
-            project_path: base.join("mercy-80-session.json").display().to_string(),
+            project_path: base.join("Songs/mercy-80-song.json").display().to_string(),
+            song_folder: base.join("Songs").display().to_string(),
+            song_filename: "mercy-80-song.json".into(),
             preset_path: base.join("presets/user-preset.json").display().to_string(),
             kit_path: base.join("kits").display().to_string(),
             sound_path: base.join("samples/user-sound.wav").display().to_string(),
@@ -1356,13 +1360,15 @@ fn mixer_tab(
                         let (left, right) = meters.peak();
                         ui.horizontal(|ui| {
                             ui.label(RichText::new("L").monospace().small().color(MUTED));
-                            ui.add(
+                            ui.add_sized(
+                                [140.0, 12.0],
                                 egui::ProgressBar::new(left.clamp(0.0, 1.0))
                                     .fill(GOLD)
                                     .text(RichText::new(level_text(left)).small()),
                             );
                             ui.label(RichText::new("R").monospace().small().color(MUTED));
-                            ui.add(
+                            ui.add_sized(
+                                [140.0, 12.0],
                                 egui::ProgressBar::new(right.clamp(0.0, 1.0))
                                     .fill(GOLD)
                                     .text(RichText::new(level_text(right)).small()),
@@ -1578,17 +1584,17 @@ fn song_tab(
         ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
             if ui
                 .button("OPEN SONG")
-                .on_hover_text("Open session (Ctrl+O)")
+                .on_hover_text("Open the named song file")
                 .clicked()
             {
-                load_project(project, params, setter, state);
+                load_song(project, params, setter, state);
             }
             if ui
                 .button("SAVE SONG")
-                .on_hover_text("Save session (Ctrl+S)")
+                .on_hover_text("Save the named song file")
                 .clicked()
             {
-                save_project(project, params, state);
+                save_song(project, params, state);
             }
         });
     });
@@ -1650,6 +1656,69 @@ fn song_tab(
                     .small()
                     .color(MUTED),
             );
+        });
+
+    ui.add_space(8.0);
+    Frame::group(ui.style())
+        .fill(PANEL_ALT)
+        .inner_margin(egui::Margin::symmetric(10, 8))
+        .show(ui, |ui| {
+            ui.label(RichText::new("SONG FILE").strong().color(GOLD));
+            ui.horizontal(|ui| {
+                ui.label("Title");
+                ui.add(egui::TextEdit::singleline(&mut project.title).desired_width(300.0));
+                ui.label(
+                    RichText::new("Saved with the arrangement and pattern data.")
+                        .small()
+                        .color(MUTED),
+                );
+            });
+            path_row(ui, "Folder", &mut state.song_folder);
+            path_row(ui, "File", &mut state.song_filename);
+            ui.horizontal(|ui| {
+                if ui.button("SAVE SONG").clicked() {
+                    save_song(project, params, state);
+                }
+                if ui.button("OPEN SONG").clicked() {
+                    load_song(project, params, setter, state);
+                }
+                ui.label(
+                    RichText::new("Existing songs in this folder:")
+                        .small()
+                        .color(MUTED),
+                );
+            });
+            let mut songs: Vec<PathBuf> = std::fs::read_dir(&state.song_folder)
+                .ok()
+                .into_iter()
+                .flatten()
+                .flatten()
+                .map(|entry| entry.path())
+                .filter(|path| {
+                    path.extension()
+                        .is_some_and(|extension| extension.eq_ignore_ascii_case("json"))
+                })
+                .collect();
+            songs.sort();
+            if songs.is_empty() {
+                ui.label(RichText::new("No song files yet.").small().color(MUTED));
+            } else {
+                ui.horizontal_wrapped(|ui| {
+                    for path in songs.iter().take(16) {
+                        let label = path
+                            .file_stem()
+                            .map(|stem| stem.to_string_lossy().to_string())
+                            .unwrap_or_else(|| "song".into());
+                        if ui
+                            .small_button(label)
+                            .on_hover_text(path.display().to_string())
+                            .clicked()
+                        {
+                            load_song_path(path, project, params, setter, state);
+                        }
+                    }
+                });
+            }
         });
 
     ui.add_space(8.0);
@@ -1737,6 +1806,32 @@ fn song_tab(
                     );
                 });
             });
+            ui.horizontal(|ui| {
+                ui.label(RichText::new("ADD PATTERN").small().color(MUTED));
+                let mut add_index = project.current_pattern.min(palette.len().saturating_sub(1));
+                egui::ComboBox::from_id_salt("timeline-add-pattern")
+                    .selected_text(
+                        palette
+                            .get(add_index)
+                            .map(|(name, _)| name.clone())
+                            .unwrap_or_default(),
+                    )
+                    .width(160.0)
+                    .show_ui(ui, |ui| {
+                        for (index, (name, _)) in palette.iter().enumerate() {
+                            ui.selectable_value(&mut add_index, index, name.clone());
+                        }
+                    });
+                if ui.button("ADD").clicked() && slots.len() < MAX_SONG_SLOTS {
+                    slots.push(nirudrums_core::SongSlot {
+                        pattern: add_index as u8,
+                        repeats: 1,
+                    });
+                    state.selected_song_slot = slots.len() - 1;
+                    state.status = "Pattern appended to song.".into();
+                }
+            });
+            ui.add_space(4.0);
             egui::ScrollArea::horizontal()
                 .id_salt("song-timeline")
                 .auto_shrink([false, true])
@@ -1764,10 +1859,27 @@ fn song_tab(
                     } else {
                         ui.horizontal_top(|ui| {
                             for index in 0..=slots.len() {
+                                let is_end = index == slots.len();
                                 let (_, payload) = ui.dnd_drop_zone::<SongDrag, _>(
                                     Frame::new().inner_margin(egui::Margin::symmetric(2, 0)),
                                     |ui| {
-                                        ui.allocate_space(Vec2::new(10.0, 76.0));
+                                        if is_end {
+                                            ui.allocate_ui_with_layout(
+                                                Vec2::new(92.0, 76.0),
+                                                Layout::centered_and_justified(
+                                                    egui::Direction::LeftToRight,
+                                                ),
+                                                |ui| {
+                                                    ui.label(
+                                                        RichText::new("+ DROP TO ADD")
+                                                            .small()
+                                                            .color(MUTED),
+                                                    );
+                                                },
+                                            );
+                                        } else {
+                                            ui.allocate_space(Vec2::new(10.0, 76.0));
+                                        }
                                     },
                                 );
                                 if let Some(payload) = payload {
@@ -2339,6 +2451,77 @@ fn load_user_preset(
             apply_project_to_params(project, params, setter);
             state.preset_id = "custom".into();
             state.status = format!("Preset loaded {}", path.display());
+        }
+        Err(error) => state.status = error,
+    }
+}
+
+fn song_path(state: &mut UiState) -> PathBuf {
+    let mut filename = state.song_filename.trim().to_string();
+    if filename.is_empty() {
+        filename = "untitled-song.json".into();
+    }
+    if !filename.to_ascii_lowercase().ends_with(".json") {
+        filename.push_str(".json");
+    }
+    state.song_filename = filename.clone();
+    PathBuf::from(&state.song_folder).join(filename)
+}
+
+fn save_song(project: &mut Project, params: &NirudrumsParams, state: &mut UiState) {
+    sync_project_from_params(project, params);
+    let path = song_path(state);
+    if let Some(parent) = path.parent() {
+        let _ = std::fs::create_dir_all(parent);
+    }
+    match project.save(&path) {
+        Ok(()) => {
+            state.project_path = path.display().to_string();
+            state.status = format!("Saved song {}", path.display());
+        }
+        Err(error) => state.status = error,
+    }
+}
+
+fn load_song(
+    project: &mut Project,
+    params: &NirudrumsParams,
+    setter: &ParamSetter,
+    state: &mut UiState,
+) {
+    let path = song_path(state);
+    match Project::load(&path) {
+        Ok(loaded) => {
+            *project = loaded;
+            apply_project_to_params(project, params, setter);
+            state.preset_id = "custom".into();
+            state.project_path = path.display().to_string();
+            state.status = format!("Opened song {}", path.display());
+        }
+        Err(error) => state.status = error,
+    }
+}
+
+fn load_song_path(
+    path: &Path,
+    project: &mut Project,
+    params: &NirudrumsParams,
+    setter: &ParamSetter,
+    state: &mut UiState,
+) {
+    match Project::load(path) {
+        Ok(loaded) => {
+            *project = loaded;
+            apply_project_to_params(project, params, setter);
+            state.preset_id = "custom".into();
+            state.project_path = path.display().to_string();
+            if let Some(parent) = path.parent() {
+                state.song_folder = parent.display().to_string();
+            }
+            if let Some(name) = path.file_name() {
+                state.song_filename = name.to_string_lossy().to_string();
+            }
+            state.status = format!("Opened song {}", path.display());
         }
         Err(error) => state.status = error,
     }

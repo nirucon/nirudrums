@@ -207,6 +207,7 @@ impl Default for SongSlot {
 #[serde(default)]
 pub struct Project {
     pub schema: u32,
+    pub title: String,
     pub kit: String,
     pub bpm: f32,
     pub swing: f32,
@@ -230,6 +231,7 @@ impl Default for Project {
         }
         Self {
             schema: SCHEMA,
+            title: "MERCY-80 Session".into(),
             kit: "mercy-80".into(),
             bpm: 120.0,
             swing: 0.0,
